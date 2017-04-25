@@ -198,7 +198,7 @@ const HOCAudio = (Audio) => {
         this.intervalId = null;
       }
     }
-    loadSrc() {
+    loadSrc(dontUpdate) {
       // console.log('load src');
       const { currentPlaylistPos } = this.state;
       if (currentPlaylistPos < this.props.playlist.length) {
@@ -210,7 +210,7 @@ const HOCAudio = (Audio) => {
         this.setState({ progress: 0 });
         this._clearInterval();
       }
-      this.props.onSongLoaded(currentPlaylistPos);
+      if (!dontUpdate) this.props.onSongLoaded(currentPlaylistPos);
     }
     togglePlayPause() {
       // console.log('toggle playpause');
