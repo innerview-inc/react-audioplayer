@@ -11,6 +11,8 @@ const App = () => (
     onCommentSubmit={(text) => {
       alert(text);
     }}
+    onSongLoaded={(currentIndex) => { console.log(currentIndex); }}
+    onTogglePlayPause={(isPlaying) => { console.log(isPlaying); }}
     color="#212121"
     autoPlay={true}
     volumeOrientationDown={true}

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const HOCAudio = (Audio) => {
   return class HOCAudioComponent extends React.Component {
@@ -7,12 +8,20 @@ const HOCAudio = (Audio) => {
         name: PropTypes.string,
         src: PropTypes.string,
         img: PropTypes.string,
+        onSongLoaded: PropTypes.func,
+        onTogglePlayPause: PropTypes.func,
         comments: PropTypes.arrayOf(PropTypes.shape({
           time: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
           content: PropTypes.string
         }))
       })).isRequired
     };
+
+    static defaultProps = {
+      onSongLoaded: () => {},
+      onTogglePlayPause: () => {},
+    };
+
     constructor(props) {
       super(props);
       if (!this.props.playlist || this.props.playlist.length === 0) {
@@ -96,16 +105,19 @@ const HOCAudio = (Audio) => {
       this.intervalId = setInterval(() => {
         this.setState({ progress: this.audioElement.currentTime });
       }, 900);
+      this.props.onTogglePlayPause(true);
     }
     onPause() {
       // console.log('audio onpause');
       this.setState({ playing: false });
       this._clearInterval();
+      this.props.onTogglePlayPause(false);
     }
     onEnded() {
       // console.log('audio onended');
       if (this.playNext) {
         this.handleEndedProgress();
+        this.props.onTogglePlayPause(false);
       }
     }
     // onTimeUpdate(e) {
@@ -188,8 +200,9 @@ const HOCAudio = (Audio) => {
     }
     loadSrc() {
       // console.log('load src');
-      if (this.state.currentPlaylistPos < this.props.playlist.length) {
-        this.audioElement.src = this.props.playlist[this.state.currentPlaylistPos].src;
+      const { currentPlaylistPos } = this.state;
+      if (currentPlaylistPos < this.props.playlist.length) {
+        this.audioElement.src = this.props.playlist[currentPlaylistPos].src;
         this.audioElement.load();
         if (this.playNext) {
           this.audioElement.play();
@@ -197,6 +210,7 @@ const HOCAudio = (Audio) => {
         this.setState({ progress: 0 });
         this._clearInterval();
       }
+      this.props.onSongLoaded(currentPlaylistPos);
     }
     togglePlayPause() {
       // console.log('toggle playpause');

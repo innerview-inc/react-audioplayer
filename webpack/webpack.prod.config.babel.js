@@ -21,12 +21,12 @@ const config = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new UglifyJSPlugin()
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // })
+    // new UglifyJSPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
   ],
   externals: {
     react: {
