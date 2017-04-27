@@ -6,6 +6,7 @@ import prodConfig from './webpack.prod.config.babel';
 const CONFIG = process.env.npm_lifecycle_event === 'build' ? prodConfig : devConfig;
 const ROOT_DIR = path.resolve(__dirname, '..');
 
+// npm_lifecycle_event=build webpack --config ./webpack/webpack.config.babel.js
 export default merge({
   entry: [
     'react-hot-loader/patch',

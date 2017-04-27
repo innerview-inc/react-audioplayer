@@ -117,8 +117,9 @@ const HOCAudio = (Audio) => {
       // console.log('audio onended');
       if (this.playNext) {
         this.handleEndedProgress();
-        this.props.onTogglePlayPause(false);
+        this.props.onTogglePlayPause(true);
       }
+      this.props.onTogglePlayPause(false);
     }
     // onTimeUpdate(e) {
     //   this.setState({ progress: this.audioElement.currentTime });
